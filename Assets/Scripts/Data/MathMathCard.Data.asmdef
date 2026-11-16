@@ -1,0 +1,14 @@
+{
+    "name": "MathMathCard.Data",
+    "rootNamespace": "MathMathCard.Data",
+    "references": ["MathMathCard.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
