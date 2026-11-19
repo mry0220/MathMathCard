@@ -35,6 +35,8 @@ namespace MathMathCard.Core
                 increment++;
             }
             ValidateNeighbors(cells);
+            ValidateStartAndGoal(startCellId, goalCellId);
+            ValidateReachable(startCellId,goalCellId);
         }
 
         private void ValidateNeighbors(IReadOnlyList<CellDefinition> cells)
@@ -68,6 +70,45 @@ namespace MathMathCard.Core
             }
         }
 
+        private void ValidateStartAndGoal(int startCellId,int goalCellId)
+        {
+            if (!_cellDefs.ContainsKey(startCellId))
+                throw new ArgumentException($"CellDefsに指定したStartCellID {startCellId} がありません", nameof(startCellId));
+            if (!_cellDefs.TryGetValue(goalCellId,out var goalCell))
+                throw new ArgumentException($"CellDefsに指定したGoalCellID {goalCellId} がありません", nameof(goalCellId));
+            if (goalCell.Type != CellType.Goal)
+                throw new ArgumentException($"CellDefsに指定したGoalCellID {goalCellId} のCellTypeがGoalではありません \n CellType : {goalCell.Type}", nameof(goalCellId));
+            if (startCellId == goalCellId)
+                throw new ArgumentException($"指定したStartCellIdとGoalIdが同じです StartCellId : {startCellId} GoalCellId : {goalCellId}", nameof(goalCellId));
+        }
+
+        private void ValidateReachable(int startCellId, int goalCellId)
+        {
+            var queue = new Queue<int>();
+            var visited = new HashSet<int>();
+
+
+            queue.Enqueue(startCellId);
+            visited.Add(startCellId);
+            while (queue.Count > 0)
+            {
+                int currentId = queue.Dequeue();
+
+                foreach (var neighborId in _cellDefs[currentId].Neighbors)
+                {
+                    if (visited.Add(neighborId))
+                        queue.Enqueue(neighborId);
+                }
+
+
+            } 
+
+            if (!visited.Contains(goalCellId))
+            {
+                throw new InvalidOperationException($"Goalに到達できませんでした。StartCellId {startCellId} GoalCellId : {goalCellId}");
+            }
+        }
+
         public IReadOnlyList<CellDefinition> Cells => _cells;
         public int StartCellId => _startCellId;
         public int GoalCellId => _goalCellId;
@@ -78,5 +119,7 @@ namespace MathMathCard.Core
                 throw new ArgumentException($"お探しのCellが見つかりませんでした CellId{id}", nameof(id));
             return cellDef;
         }
+
+        
     }
 }

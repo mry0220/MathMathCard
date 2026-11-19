@@ -1,7 +1,16 @@
 {
     "name": "MathMathCard.Network",
     "rootNamespace": "MathMathCard.Network",
-    "references": ["MathMathCard.Core","MathMathCard.Data"],
+    "references": [
+        "MathMathCard.Core",
+        "MathMathCard.Data",
+        "Unity.Collections",
+        "Unity.Netcode.Runtime",
+        "Unity.Networking.Transport",
+        "Unity.Services.Core",
+        "Unity.Services.Authentication",
+        "Unity.Services.Multiplayer"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
